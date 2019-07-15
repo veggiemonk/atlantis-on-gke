@@ -1,13 +1,13 @@
 resource "null_resource" "demo" {
-  triggers {
-    google_storage_bucket = "${google_storage_bucket.bucket.name}"
-    credentials           = "${md5(google_service_account_key.key.private_key)}"
-    encryption_key        = "${md5(random_id.encryption-key.b64_std)}"
+  triggers = {
+    google_storage_bucket = google_storage_bucket.bucket.name
+    credentials           = md5(google_service_account_key.key.private_key)
+    encryption_key        = md5(random_id.encryption-key.b64_std)
   }
 
   depends_on = [
-    "google_project_iam_member.service-account",
-    "google_storage_bucket_iam_member.sa-to-bucket",
+    google_project_iam_member.service-account,
+    google_storage_bucket_iam_member.sa-to-bucket,
   ]
 
   provisioner "local-exec" {
@@ -98,5 +98,7 @@ git add .
 git commit -m "Initial commit"
 git push -u -f origin master
 EOF
+
   }
 }
+
